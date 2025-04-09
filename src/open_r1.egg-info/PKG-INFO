@@ -1,0 +1,271 @@
+Metadata-Version: 2.2
+Name: open-r1
+Version: 0.1.0.dev0
+Summary: Open R1
+Home-page: https://github.com/huggingface/open-r1
+Author: The Hugging Face team (past and future)
+Author-email: lewis@huggingface.co
+License: Apache
+Keywords: llm inference-time compute reasoning
+Classifier: Development Status :: 3 - Alpha
+Classifier: Intended Audience :: Developers
+Classifier: Intended Audience :: Education
+Classifier: Intended Audience :: Science/Research
+Classifier: License :: OSI Approved :: Apache Software License
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Topic :: Scientific/Engineering :: Artificial Intelligence
+Requires-Python: >=3.10.9
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: accelerate>=1.2.1
+Requires-Dist: bitsandbytes>=0.43.0
+Requires-Dist: einops>=0.8.0
+Requires-Dist: datasets>=3.2.0
+Requires-Dist: deepspeed==0.15.4
+Requires-Dist: hf_transfer>=0.1.4
+Requires-Dist: huggingface-hub[cli]<1.0,>=0.19.2
+Requires-Dist: liger_kernel==0.5.2
+Requires-Dist: packaging>=23.0
+Requires-Dist: safetensors>=0.3.3
+Requires-Dist: sentencepiece>=0.1.99
+Requires-Dist: transformers@ git+https://github.com/huggingface/transformers.git@main
+Requires-Dist: trl@ git+https://github.com/huggingface/trl.git@main
+Provides-Extra: tests
+Requires-Dist: pytest; extra == "tests"
+Requires-Dist: parameterized>=0.9.0; extra == "tests"
+Provides-Extra: torch
+Requires-Dist: torch>=2.5.1; extra == "torch"
+Provides-Extra: quality
+Requires-Dist: black>=24.4.2; extra == "quality"
+Requires-Dist: isort>=5.12.0; extra == "quality"
+Requires-Dist: flake8>=6.0.0; extra == "quality"
+Provides-Extra: eval
+Requires-Dist: math-verify; extra == "eval"
+Provides-Extra: dev
+Requires-Dist: black>=24.4.2; extra == "dev"
+Requires-Dist: isort>=5.12.0; extra == "dev"
+Requires-Dist: flake8>=6.0.0; extra == "dev"
+Requires-Dist: pytest; extra == "dev"
+Requires-Dist: parameterized>=0.9.0; extra == "dev"
+Requires-Dist: math-verify; extra == "dev"
+Dynamic: author
+Dynamic: author-email
+Dynamic: classifier
+Dynamic: description
+Dynamic: description-content-type
+Dynamic: home-page
+Dynamic: keywords
+Dynamic: license
+Dynamic: provides-extra
+Dynamic: requires-dist
+Dynamic: requires-python
+Dynamic: summary
+
+# MMR1
+
+## ⚙️ **Environment**
+
+- `git clone https://github.com/linkangheng/MMR1.git`
+- Manual installation of `lighteval`
+  ```bash
+  git clone https://github.com/huggingface/lighteval.git && cd lighteval && git checkout 4f381b352c0e467b5870a97d41cb66b487a2c503 && pip install ".[math]" && rm -rf lighteval
+  ```
+- `cd MMR1 && pip install -e ".[dev]"`
+- Update the transformers to the 4.49.0.dev0 to support the Qwen2.5_VL
+- `pip install vllm == 0.7.2 trl == 0.15.0.dev0` to support vLLM
+
+## 🚨 **Notes**
+
+- You are supported to get the permission of `B:kanelin-jfs` and rlaunch your machine by `--mount=juicefs+s3://oss.i.shaipower.com/kanelin-jfs:/mnt/jfs-test` to access the dataset and the model.
+- Whenever `MMR1` updates, you may reinstall the `MMR1` by `cd MMR1 && pip install -e ".[dev]"`
+- If your dataset contains S3 paths, you may run `unset http_proxy https_proxy all_proxy no_proxy` before training.
+
+## 📋 **ToDos**
+
+- [x] Accelerate and support `vllm`
+- [x] Fix the bug of gradient checkpointing
+- [x] Support scale up rollout size
+- [x] Support Multi-machine parallel
+- [x] Support `Kimi-KL`
+- [x] Support `OCR` Tasks
+- [ ] Support `Detection` Tasks
+- [ ] Remove all the absolute path
+
+## 📅 **Update Logs**
+### 🤯2025.02.16
+- Move all constants to constants.py
+- Add the `train_sample_size` to config the number of training samples
+- Add system_prompt_template, question_template, answer_template to set the system prompt, question template, answer template, if you want to use a custom template, you can design your own template in the `constants.py` and set the `system_prompt_template`, `question_template`, `answer_template` to your custom template name.
+- **Support json dataset as input**, we recommend you to use the `json` format to store your dataset, all you need to create a `json` file which contains dicts with keys `problem`, `solution`, `image`. e.g.
+```json
+{
+    "problem": <str>,
+    "solution": <int/str>,
+    "image": <image_path>
+}
+```
+
+### 🤯2025.02.17
+#### 🖼️ OCR Task Support
+The model now supports training on OCR (Optical Character Recognition) tasks.
+
+**Usage:**
+```bash
+bash local_scripts/train/train_qwen2_2b_vl_ocr_demo.sh
+```
+
+---
+#### 🔥Temperature Control
+Control the sampling temperature during training using `--temperature_func`.
+
+Available Functions:
+
+- **Linear Scheduling:**
+  
+  - Set `--temperature_func linear` with:
+
+    - `--temperature_begin`: Initial temperature (must be ≤ temperature_end).
+
+    - `--temperature_end`: Final temperature.
+
+  - Temperature linearly increases from `--temperature_begin` to `--temperature_end` over training steps.
+
+- **Constant Scheduling:**
+  - Set `--temperature_func constant` with `--temperature` to apply a fixed temperature value.
+
+---
+### 🎛️ KL Divergence Control
+
+- **Note:** You can view [kl approximator introduction](https://zhuanlan.zhihu.com/p/139084847) to know what is k1, k2(kimikl), k3.Our 'fullkimi' follow the kimi1.5 paper loss.
+- **Note:** No matter whether to use kl or which kl to use, we've provide module to compute kl while training. So, ref model is loaded even if use_kl is set to False
+
+#### K1: Context-Distribution KL
+
+- **Definition:**
+
+  k1 = logprobs - ref_logprobs
+
+- **Parameters:**
+
+  - Set `--kl_approximator k1` with `--use_kl True` to use k1 kl for training
+  - `--beta`: Weight for loss (default: 0.04).
+  
+#### K3: Adaptive Response KL
+
+- **Definition:** 
+
+  k3 = exp(ref_logprob-logprob) - (ref_logprob - loggprob) - 1
+
+- **Parameters:**
+
+  - Set `--kl_approximator k3` with `--use_kl True` to use k1 kl for training
+  - `--beta`: Weight for loss (default: 0.04).
+  
+#### KimiKL: Task-Specific KL
+
+- **Definition:** 
+
+  kimikl(k2) = 0.5*(logprob-ref_logprob)**2
+
+- **Parameters:**
+
+  - Set `--kl_approximator kimi` with `--use_kl True` to use k1 kl for training
+  - `--beta`: Weight for KimiKL loss (default: 0.04).
+
+#### KimiFull: Full-Distribution KL
+- **Definition:**
+
+  <td><img src="./assets/fullkimi_loss.png"></td>
+
+- **Parameters:**
+  
+  - Set `--kl_approximator kimifull` with `--use_kl True` to use k1 kl for training
+  - `--beta`: Weight for KimiFull loss (default: 0.04).
+
+---
+### 📉 Entropy Regularization
+- **Definition:**
+  - Entropy loss is computed as L_entropy = -entropy_weight * H(p), where H(p) is the entropy of the model’s output distribution. This term incentivizes the model to sharpen (low entropy) or diversify (high entropy) predictions based on the task.
+
+- **Parameters:**
+  - `--entropy_reg`: Enable entropy regularization (default: False).
+  - `--entropy_weight`:
+    - Use positive values to encourage higher entropy (e.g., for creative generation).
+    - Use negative values to reduce entropy (e.g., for discriminative tasks like OCR or grounding).
+
+---
+#### 📊 Enhanced Training Logs
+Additional metrics are now logged to wandb and local:
+
+##### Reward Logs:
+- `completion`: Model response when rollouting.
+- `solution`: Intermediate reasoning steps (if applicable).
+- `reward`: Task-specific reward signals.
+
+##### Model State Metrics:
+- `KLs`: K1, K3, KimiKL, and KimiFull divergence values.
+- `entropy`: Output distribution entropy.
+- `temperature`: Current temperature value.
+To enable logging, ensure wandb is configured in your environment.
+
+### 🤯2025.02.23
+#### 🔥 Inference
+
+We provide a script to easily inference the model.
+
+```bash
+python local_scripts/eval/inference.py
+```
+---\
+
+#### Support quickly evaluate refcoco/+/g
+
+```bash
+bash local_scripts/eval/evaluate_refcoco.sh
+```
+
+---
+
+#### Add `--skip_special_tokens` for rec task
+
+- Use `--skip_special_tokens` when requiring special tokens.
+
+---
+
+### 🤯2025.02.23
+Use vllm to accelerate evaluation
+
+
+## 🚀 **Quick Start**
+We now support *counting*, *grounding*, *ocr* tasks. You can easily run the demo scripts in `local_scripts/train/`.
+
+## 🥩 **Mini-Batch**
+Optimize GRPO memory usage by redefining per_device_batch_size as generations per device, introduces a more flexible approach:
+
+- Instead of defining per_device_batch_size as the number of prompts per device, it now represents the number of generations per device.
+- This allows for much greater flexibility in choosing the number of generations (G) and the batch size per device.
+- The only constraint is that the global batch size (num_processes * per_device_batch_size) must be divisible by G.
+
+Note that these settings should be equivalent:
+
+```python
+num_generations = ...  # eg, 8
+num_prompts_per_device = ...  # eg, 1
+# main
+GRPOConfig(num_generations=num_generations, per_device_batch_size=num_prompts_per_device, ...)
+# this PR
+GRPOConfig(num_generations=num_generations, per_device_batch_size=num_generations*num_prompts_per_device, ...)
+```
+
+<table align="center" cellpadding="0" cellspacing="0">
+  <tr>
+    <td align="center"><h3>Original Training</h3></td>
+    <td align="center"><h3>Mini-Batch Training</h3></td>
+  </tr>
+  <tr>
+    <td><img src="./assets/original_training.png"></td>
+    <td><img src="./assets/mini_batch_training.png"></td>
+  </tr>
+</table>
