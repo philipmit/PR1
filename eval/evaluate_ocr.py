@@ -111,7 +111,7 @@ def single_gpu_eval_model(args, data, language='en'):
     # Evaluation metrics
     messages = []
     for x in data:
-        img_path = os.path.join(args.image_root, 'ocr', language+"_pdf_png", x['image'])
+        img_path = os.path.join(args.image_dir, 'ocr', language+"_pdf_png", x['image'])
         messages.append([{
             "role": "user",
             "content": [
@@ -137,38 +137,30 @@ def single_gpu_eval_model(args, data, language='en'):
     return results
 
 def main(args):
-    output_path = os.path.join(
-            args.model_path,
-            f"ocr_results_{datetime.datetime.now().strftime('%m%d_%H%M%S')}.json"
-        )
+    output_path = os.path.join('logs', os.path.basename(args.model_path), 'ocr')
+    if not os.path.exists(output_path):
+        os.makedirs(output_path, exist_ok=True)
     ray.init()
     num_gpus = int(ray.cluster_resources().get("GPU", 0))
-    # prepare questions
     ALL_DATASETS = [
         'en_page_ocr', 'cn_page_ocr'
     ]
     target_datasets = [ALL_DATASETS[args.task_id]]
     for dataset in target_datasets:
         print(f"Processing {dataset}...")
-        
-        ds_path = os.path.join(args.data_root, 'ocr', f"{dataset}.json")
-        
-        if not os.path.exists(os.path.join(args.output_path, args.output_file)):
-            data = json.load(open(ds_path, "r"))
-            # questions = json.load(open(os.path.expanduser(args.question_file), "r"))
-            mini_batches = [get_chunk(data, num_gpus, chunk_idx) for chunk_idx in range(num_gpus)]
-
-            # distribute evaluation
-            anss = [single_gpu_eval_model.remote(args, mini_batch, language=dataset.split('_')[0]) for mini_batch in mini_batches]
-            anss = ray.get(anss)
-            anss = [item for sublist in anss for item in sublist]
-            data = [{**data, "output": ans} for data, ans in zip(data, anss)]
-            with open(os.path.join(args.output_path, args.output_file), "w") as f:
-                json.dump(data, f, indent=4)
-        else:
-            data = json.load(open(os.path.join(args.output_path, args.output_file), "r"))
-            anss = [x['output'] for x in data]
-        # save answers
+        ds_path = os.path.join(args.anno_dir, f"{dataset}.json")
+        print('finish loading data')
+        data = json.load(open(ds_path, "r"))
+        print("begin inference")
+        mini_batches = [get_chunk(data, num_gpus, chunk_idx) for chunk_idx in range(num_gpus)]
+        # distribute inference
+        anss = [single_gpu_eval_model.remote(args, mini_batch, language=dataset.split('_')[0]) for mini_batch in mini_batches]
+        anss = ray.get(anss)
+        anss = [item for sublist in anss for item in sublist]
+        data = [{**data, "output": ans} for data, ans in zip(data, anss)]
+        with open(os.path.join(output_path, f"{dataset}_results_{datetime.datetime.now().strftime('%m%d_%H%M%S')}.json"), "w") as f:
+            json.dump(data, f, indent=4)
+        # multi process post processing
         mini_eval_batches = [get_chunk(data, args.num_processes, chunk_idx) for chunk_idx in range(args.num_processes)]
         scores = [compute_metrics.remote(mini_eval_batch) for mini_eval_batch in mini_eval_batches]
         scores = ray.get(scores)
@@ -181,24 +173,21 @@ def main(args):
         for k in metrics:
             assert len(metrics[k]) == len(data)
             metrics[k] = sum(metrics[k]) / len(metrics[k])
-        with open(os.path.join(args.model_path, args.metrics_file), "w") as f:
+        with open(os.path.join(output_path, f"{dataset}_scores_{datetime.datetime.now().strftime('%m%d_%H%M%S')}.json"), "w") as f:
             json.dump(metrics, f, indent=4)
+        
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
-    parser.add_argument("--model_path", type=str, default="xxx")
-    parser.add_argument("--model_base", type=str, default=None)
-    parser.add_argument("--image_root", type=str, default="xxx")
-    parser.add_argument("--data_root", type=str, default="xxx")
+    parser.add_argument("--model_path", type=str, default="Path to the model directory")
+    parser.add_argument("--image_dir", type=str, default="Directory of image files")
+    parser.add_argument("--anno_dir", type=str, default="Directory of annotation files")
     parser.add_argument("--temperature", type=float, default=0)
     parser.add_argument("--top_p", type=float, default=1)
     parser.add_argument("--top_k", type=int, default=1)
     parser.add_argument("--num_gpus", type=int, default=8)
-    parser.add_argument("--output_path", type=str, default="./logs")
-    parser.add_argument("--output_file", type=str, default="")
-    parser.add_argument("--metrics_file", type=str, default="FOX_cn_evaluations_metrics.json")
-    parser.add_argument("--task_id", type=int, default=0, help="ID of the dataset to evaluate")
-    parser.add_argument("--batch_size", type=int, default=1, help="Batch size")
-    parser.add_argument("--num_processes", type=int, default=16, help="Number of processes")
+    parser.add_argument("--task_id", type=int, default=0, help="ID of the dataset to evaluate, 0 for en_page_ocr and 1 for cn_page_ocr")
+    parser.add_argument("--batch_size", type=int, default=1, help="Batch size for processing")
+    parser.add_argument("--num_processes", type=int, default=16, help="Number of processes for post processing")
     args = parser.parse_args()
     main(args)

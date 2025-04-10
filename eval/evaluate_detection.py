@@ -17,12 +17,12 @@ class COCOEvaluator:
             "model_path": args.model_path,
             "gpu_memory_utilization": 0.7
         }
-        self.coco_gt = COCO(self.args.anno_file)
+        self.coco_gt = COCO(self.args.anno_dir)
         # coco set, you can customize the question for different tasks
         # self.question="Please output bbox coordinates and names of person, bicycle, car, motorcycle, airplane, bus, train, truck, boat, traffic light, fire hydrant, stop sign, parking meter, bench, bird, cat, dog, horse, sheep, cow, elephant, bear, zebra, giraffe, backpack, umbrella, handbag, tie, suitcase, frisbee, skis, snowboard, sports ball, kite, baseball bat, baseball glove, skateboard, surfboard, tennis racket, bottle, wine glass, cup, fork, knife, spoon, bowl, banana, apple, sandwich, orange, broccoli, carrot, hot dog, pizza, donut, cake, chair, couch, potted plant, bed, dining table, toilet, tv, laptop, mouse, remote, keyboard, cell phone, microwave, oven, toaster, sink, refrigerator, book, clock, vase, scissors, teddy bear, hair drier, toothbrush."
         self.question = "Locate every item from the category list in the image and output the coordinates in JSON format. The category set includes person, bicycle, car, motorcycle, airplane, bus, train, truck, boat, traffic light, fire hydrant, stop sign, parking meter, bench, bird, cat, dog, horse, sheep, cow, elephant, bear, zebra, giraffe, backpack, umbrella, handbag, tie, suitcase, frisbee, skis, snowboard, sports ball, kite, baseball bat, baseball glove, skateboard, surfboard, tennis racket, bottle, wine glass, cup, fork, knife, spoon, bowl, banana, apple, sandwich, orange, broccoli, carrot, hot dog, pizza, donut, cake, chair, couch, potted plant, bed, dining table, toilet, tv, laptop, mouse, remote, keyboard, cell phone, microwave, oven, toaster, sink, refrigerator, book, clock, vase, scissors, teddy bear, hair drier, toothbrush."
         self.img_ids = self.coco_gt.getImgIds()[:self.args.sample_num]
-        self.images=[os.path.join(self.args.image_root, x['file_name']) for x in self.coco_gt.loadImgs(self.img_ids)]
+        self.images=[os.path.join(self.args.image_dir, x['file_name']) for x in self.coco_gt.loadImgs(self.img_ids)]
         self.gpu_num = torch.cuda.device_count() if torch.cuda.is_available() else 1
         self.cat_name_to_id = {cat['name']: cat['id'] for cat in self.coco_gt.dataset['categories']}
 
@@ -129,7 +129,9 @@ class COCOEvaluator:
         return results
 
     def _run_coco_eval(self, results):
-        temp_file = f"{self.args.model_path}/temp_results_{time.time()}.json"
+        output_path = os.path.join('logs', os.path.basename(self.args.model_path), 'detection')
+        os.makedirs(os.path.dirname(output_path), exist_ok=True)
+        temp_file = os.path.join(output_path, f"temp_results_{time.time()}.json")
         with open(temp_file, 'w') as f:
             json.dump(results, f)
         
@@ -154,7 +156,9 @@ class COCOEvaluator:
             "AR_medium": coco_eval.stats[10],
             "AR_large": coco_eval.stats[11],
         }
-        with open(f"{self.args.model_path}/coco_eval_results.json", 'w') as f:
+        
+        
+        with open(os.path.join(output_path, 'coco_eval_results.json'), 'w') as f:
             json.dump(result, f)
         print(f'result_file: {temp_file}')
         return result
@@ -167,8 +171,8 @@ def main(args):
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Visual Grounding Evaluation Script")
     parser.add_argument("--model_path", type=str, required=True, help="Model path")
-    parser.add_argument("--anno_file", type=str, default=None, help="Data root directory")
-    parser.add_argument("--image_root", type=str, default=None, help="Image root directory")
+    parser.add_argument("--anno_dir", type=str, default=None, help="Data root directory")
+    parser.add_argument("--image_dir", type=str, default=None, help="Image root directory")
     parser.add_argument("--batch_size", type=int, default=1, help="Batch size")
     parser.add_argument("--sample_num", type=int, default=-1, help="Number of samples (for debugging)")
     args = parser.parse_args()
