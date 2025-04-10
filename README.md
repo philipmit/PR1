@@ -57,7 +57,7 @@ We present Perception-R1, a scalable RL framework using Group Relative Policy Op
 ## TODOS
 - [x] `2025-04-10` 🎄: Initial release of Perception-R1 models and evaluation code.
 - [x]  🧐: Release the training code of Perception-R1 on grounding task.
-- [ ]  🚧: Additional perception tasks coming soon (detection, OCR, counting)
+- [ ]  🚧: Additional perception tasks coming soon (detection, OCR, counting...)
 
 
 # 🛠️Installation
