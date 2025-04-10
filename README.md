@@ -113,8 +113,8 @@ python eval/evaluate_counting.py \
 ```bash
 python eval/evaluate_grounding.py \
     --model_path 'Kangheng/PR1-Qwen2-VL-2B-Grounding' \
-    --data_root 'eval/jsons/grounding/' \
-    --image_root 'eval/images/coco/'
+    --anno_dir 'eval/jsons/grounding/' \
+    --image_dir 'eval/images/coco/'
 ```
 
 ### Detection Evaluation
@@ -122,15 +122,15 @@ python eval/evaluate_grounding.py \
 pip install pycocotools
 python eval/evaluate_detecion.py \
     --model_path Kangheng/PR1-Qwen2-VL-2B-Detection \
-    --image_root eval/images/coco/val2017/ \
-    --anno_file eval/jsons/detection/coco_val2017.json
+    --anno_dir 'eval/jsons/detection/coco_val2017.json' \
+    --image_dir 'eval/images/coco/val2017/'
 ```
 ### OCR Evaluation
 ```bash
 python eval/evaluate_ocr.py \
     --model_path Kangheng/PR1-Qwen2-VL-2B-OCR \
-    --image_root eval/images/ocr/ \
-    --data_root eval/jsons/ocr/
+    --anno_dir 'eval/jsons/ocr/' \
+    --image_dir 'eval/images/ocr/'
 ```
 
 # 📈Results

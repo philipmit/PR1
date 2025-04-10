@@ -142,7 +142,7 @@ def main(args):
     
     for ds in target_datasets:
         print(f"Processing {ds}...")
-        ds_path = os.path.join(args.data_root, f"{ds}.json")
+        ds_path = os.path.join(args.anno_dir, f"{ds}.json")
         data = json.load(open(ds_path, "r"))
         if args.sample_num > 0:
             data = data[:args.sample_num]
@@ -150,7 +150,7 @@ def main(args):
         # Prepare all messages
         messages = []
         for x in data:
-            img_path = os.path.join(args.image_root, x['image'])
+            img_path = os.path.join(args.image_dir, x['image'])
             messages.append([{
                 "role": "user",
                 "content": [
@@ -201,10 +201,10 @@ def main(args):
         }
         
         # Save results
-        output_path = f"{args.model_path}/evaluations/rec_results_{ds}_{os.path.basename(args.model_path)}.json"
+        output_path = os.path.join('logs', os.path.basename(args.model_path), 'grounding', ds)
         os.makedirs(os.path.dirname(output_path), exist_ok=True)
         
-        with open(output_path, 'w') as f:
+        with open(os.path.join(output_path, 'rec_results.json'), 'w') as f:
             json.dump({
                 'model': args.model_path,
                 'config': vars(args),
@@ -219,8 +219,8 @@ def main(args):
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Visual Localization Evaluation Script")
     parser.add_argument("--model_path", type=str, required=True, help="Model path")
-    parser.add_argument("--data_root", type=str, default="path/to/refcoco", help="Data root directory")
-    parser.add_argument("--image_root", type=str, default="path/to/coco/", help="Image root directory")
+    parser.add_argument("--anno_dir", type=str, default="path/to/refcoco", help="Data root directory")
+    parser.add_argument("--image_dir", type=str, default="path/to/coco/", help="Image root directory")
     parser.add_argument("--batch_size", type=int, default=64, help="Batch size")
     parser.add_argument("--sample_num", type=int, default=-1, help="Number of samples (for debugging)")
     args = parser.parse_args()

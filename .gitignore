@@ -2,3 +2,4 @@ local_scripts/train/debug.sh
 *.pyc
 src/open_r1.egg-info/PKG-INFO
 assets/.DS_Store
+eval/logs

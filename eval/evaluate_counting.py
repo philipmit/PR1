@@ -118,6 +118,9 @@ class CountingEvaluator:
         Returns:
             float: The overall average accuracy (in percent).
         """
+        output_path = os.path.join('logs', os.path.basename(self.args.model_path), 'counting')
+        if not os.path.exists(output_path):
+            os.makedirs(output_path, exist_ok=True)
         all_results = {}
         total_correct = 0
         total_samples = 0
@@ -151,13 +154,9 @@ class CountingEvaluator:
         all_results['average_accuracy'] = avg_accuracy
 
         # Save the results to a JSON file
-        output_path = os.path.join(
-            self.args.model_path,
-            f"counting_results_{datetime.datetime.now().strftime('%m%d_%H%M%S')}.json"
-        )
         self.all_results = all_results
         print(f"Saving results to {output_path}")
-        with open(output_path, "w") as f:
+        with open(os.path.join(output_path, f"counting_scores_{datetime.datetime.now().strftime('%m%d_%H%M%S')}.json"), "w") as f:
             json.dump(all_results, f, indent=2)
 
         return avg_accuracy
