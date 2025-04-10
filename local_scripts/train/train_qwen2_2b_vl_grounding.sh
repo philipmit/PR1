@@ -36,7 +36,7 @@ torchrun \
     --deepspeed ${PR1_PATH}/configs/zero3.json \
     --output_dir "${OUTPUT_DIR}" \
     --model_name_or_path /mnt/jfs-test/models/Qwen2-VL-2B-Instruct \
-    --dataset_name linkangheng/refcoco_320k \
+    --dataset_name Kangheng/refcoco_320k \
     --max_prompt_length 2048 \
     --max_completion_length 768 \
     --per_device_train_batch_size 8 \
