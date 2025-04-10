@@ -52,7 +52,7 @@ We present Perception-R1, a scalable RL framework using Group Relative Policy Op
 
 🚀 **GRPO Optimization**: Scalable policy learning with meticulously crafted rule-based reward shaping.
 
-🔥 **Surprising Performance**: Perception-R1 achieves remarkable improvements across multiple visual perception benchmarks, notably reaching 31.9% AP on COCO2017 validation set - making it the first 3B-scale MLLM to achieve such performance.
+🔥 **Surprising Performance**: Perception-R1 achieves remarkable improvements across multiple visual perception benchmarks, notably reaching 31.9% mAP on COCO2017 validation set - making it the first 3B-scale MLLM to achieve such performance.
 
 ## TODOS
 - [x] `2025-04-10` 🎄: Initial release of Perception-R1 models and evaluation code.
