@@ -92,8 +92,8 @@ class CountingEvaluator:
         self.QUESTION_TEMPLATE = "Output all the bounding boxes of the {question}"
         # Define the evaluation dataset names
         self.eval_sets = [
-            "pixmo_count_test540_counting_problems_label",
-            "pixmo_count_validation540_counting_problems_label",
+            "pixmo_count_test540",
+            "pixmo_count_val540",
         ]
         self.dataset_dict = {}
         # Load evaluation data from JSONL files
@@ -101,10 +101,10 @@ class CountingEvaluator:
             file_path = os.path.join(args.anno_dir, f"{eval_set}.jsonl")
             with open(file_path, "r") as f:
                 data = [json.loads(line) for line in f]
-            images = [os.path.join(args.image_dir, d['image_path']) for d in data]
+            for d in data:
+                d['image_path'] = os.path.join(args.image_dir, d['image_path'])
             self.dataset_dict[eval_set] = {
                 'data': data,
-                'images': images
             }
 
     def evaluate(self):

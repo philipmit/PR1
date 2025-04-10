@@ -167,8 +167,8 @@ def main(args):
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Visual Grounding Evaluation Script")
     parser.add_argument("--model_path", type=str, required=True, help="Model path")
-    parser.add_argument("--anno_file", type=str, default="/mnt/jfs-test/data/COCO/annotations/instances_val2017_resized.json", help="Data root directory")
-    parser.add_argument("--image_root", type=str, default="s3://vision-language-data/COCO/val2017/", help="Image root directory")
+    parser.add_argument("--anno_file", type=str, default=None, help="Data root directory")
+    parser.add_argument("--image_root", type=str, default=None, help="Image root directory")
     parser.add_argument("--batch_size", type=int, default=1, help="Batch size")
     parser.add_argument("--sample_num", type=int, default=-1, help="Number of samples (for debugging)")
     args = parser.parse_args()
