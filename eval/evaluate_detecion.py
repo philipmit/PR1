@@ -67,9 +67,10 @@ class COCOEvaluator:
         
         sampling_params = SamplingParams(
             temperature=0,
-            repetition_penalty=1.05,
+            # repetition_penalty=1.05,
             max_tokens=4096,
             skip_special_tokens=True,
+            # frequency_penalty=0.1,
         )
 
         processor = AutoProcessor.from_pretrained(model_args["model_path"])
@@ -171,18 +172,4 @@ if __name__ == "__main__":
     parser.add_argument("--batch_size", type=int, default=1, help="Batch size")
     parser.add_argument("--sample_num", type=int, default=-1, help="Number of samples (for debugging)")
     args = parser.parse_args()
-    
-    '''
-    coco demo:
-    python /data/ICCV2025/PaR/MMR1/dirty_cache/detection/evaluate_detection.py \
-        --model_path /mnt/jfs-test/checkpoints/mmr1/counting/cold_start/rl/20250326132113/checkpoint-200 \
-        --batch_size 64
-
-    lvis demo:
-    python /data/ICCV2025/PaR/MMR1/dirty_cache/detection/evaluate_detection.py \
-        --model_path /mnt/jfs-test/checkpoints/mmr1/counting/cold_start/rl/20250403165436/checkpoint-200 \
-        --anno_file /mnt/jfs-test/data/LVIS/lvis_v1_val_resized.json \
-        --image_root s3://vision-language-data/COCO/ \
-        --batch_size 32
-    '''
     main(args)

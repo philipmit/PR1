@@ -64,7 +64,8 @@ class RefCOCOEvaluator:
         self.sampling_params = SamplingParams(
             temperature=0,
             repetition_penalty=1.05,
-            skip_special_tokens=False,
+            max_tokens=512,
+            skip_special_tokens=False
         )
         self.processor = AutoProcessor.from_pretrained(args.model_path)
         

@@ -177,12 +177,5 @@ def main():
     accuracy = evaluator.evaluate()
     print(f"Final Accuracy: {accuracy:.2f}%")
 
-    '''
-    python /data/ICCV2025/PaR/MMR1/eval/kane_eval/evaluate_counting_debug.py \
-        --model_path 'path/to/model' \
-        --anno_dir 'path/to/anno_dir' \
-        --image_dir 'path/to/image_dir'
-    '''
-
 if __name__ == "__main__":
     main()

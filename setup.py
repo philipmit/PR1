@@ -60,12 +60,17 @@ _deps = [
     "pytest",
     "safetensors>=0.3.3",
     "sentencepiece>=0.1.99",
-    "torch>=2.5.1",
-    "transformers @ git+https://github.com/huggingface/transformers.git@main",
-    "trl @ git+https://github.com/huggingface/trl.git@main",
-    "vllm==0.6.6.post1",
+    "torch==2.5.1",
+    "transformers",
+    "trl",
+    "vllm==0.7.3",
     "wandb>=0.19.1",
     "pillow",
+    "jmespath>=0.7.1,<2.0.0",
+    "flash-attn==2.7.0.post2",
+    "scipy",
+    "qwen_vl_utils",
+    "megfile"
 ]
 
 # this is a lookup table with items like:
@@ -103,6 +108,14 @@ install_requires = [
     deps["sentencepiece"],
     deps["transformers"],
     deps["trl"],
+    deps["flash-attn"],
+    deps["scipy"],
+    deps["pillow"],
+    deps["jmespath"],
+    deps["vllm"],
+    deps["wandb"],
+    deps["qwen_vl_utils"],
+    deps["megfile"]
 ]
 
 setup(
