@@ -67,7 +67,6 @@ _deps = [
     "wandb>=0.19.1",
     "pillow",
     "jmespath>=0.7.1,<2.0.0",
-    "flash-attn==2.7.0.post2",
     "scipy",
     "qwen_vl_utils",
     "megfile"
