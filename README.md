@@ -24,7 +24,7 @@
     <a href="" target="_blank">Kangheng Lin</a><sup>2*</sup>,</span>
     <a href="" target="_blank">Liang Zhao</a><sup>3*</sup>,</span>
     <a href="" target="_blank">Jisheng Yin</a><sup>3</sup>,</span>
-    <a href="" target="_blank">Yana Wei</a><sup>3</sup>,</span>
+    <a href="" target="_blank">Yana Wei</a><sup>4</sup>,</span>
     <a href="" target="_blank">Yuang Peng</a><sup>5</sup>,
     <a href="" target="_blank">Haoran Wei</a><sup>3</sup>,
     <a href="" target="_blank">Jianjian Sun</a><sup>3</sup>,
