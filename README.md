@@ -48,11 +48,11 @@
 # 📖 Overview
 We present Perception-R1, a scalable RL framework using Group Relative Policy Optimization (GRPO) during MLLM post-training. Key innovations:
 
-🎯 *Perceptual Perplexity Analysis*: We introduce a novel analytical framework that reveals critical thresholds for effective reinforcement learning in perception tasks, providing insights into when and how RL can improve visual understanding.
+🎯 **Perceptual Perplexity Analysis**: We introduce a novel analytical framework that reveals critical thresholds for effective reinforcement learning in perception tasks, providing insights into when and how RL can improve visual understanding.
 
-🚀 *GRPO Optimization*: Scalable policy learning with meticulously crafted rule-based reward shaping.
+🚀 **GRPO Optimization**: Scalable policy learning with meticulously crafted rule-based reward shaping.
 
-🔥 *Surprising Performance*: Perception-R1 achieves remarkable improvements across multiple visual perception benchmarks, notably reaching 31.9% AP on COCO2017 validation set - making it the first 3B-scale MLLM to achieve such performance.
+🔥 **Surprising Performance**: Perception-R1 achieves remarkable improvements across multiple visual perception benchmarks, notably reaching 31.9% AP on COCO2017 validation set - making it the first 3B-scale MLLM to achieve such performance.
 
 ## TODOS
 - [x] `2025-04-10` 🎄: Initial release of Perception-R1 models and evaluation code.
