@@ -12,10 +12,10 @@
 <a href="" target="_blank">
     <img alt="Website" src="https://img.shields.io/badge/🌎_Website-Perception--R1-blue.svg" height="20" />
 </a>
-<a href="" target="_blank">
+<a href="https://huggingface.co/collections/Kangheng/perception-r1-67f6b14f89d307a0ece985af" target="_blank">
     <img alt="HF Model: Perception-R1" src="https://img.shields.io/badge/%F0%9F%A4%97%20_Model-Perception--R1-ffc107?color=ffc107&logoColor=white" height="20" />
 </a>
-<a href="" target="_blank">
+<a href="https://huggingface.co/collections/Kangheng/perception-r1-67f6b14f89d307a0ece985af" target="_blank">
     <img alt="HF Model: UTR-Data" src="https://img.shields.io/badge/%F0%9F%A4%97%20_Dataset-Perception--R1-ffc107?color=ffc107&logoColor=white" height="20" />
 </a>
 
