@@ -2,7 +2,7 @@
 
 <h1><img src="assets/logo.jpg" width="1%"/> <i>Perception R1</i>:</br>Pioneering Perception Policy with Reinforcement Learning</h1>
 
-<img src="assets/preview.jpg" width="50%"/>
+<img src="assets/preview.jpg" width="100%"/>
 
 <br />
 
