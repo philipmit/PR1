@@ -6,7 +6,7 @@
 
 <br />
 
-<a href="" target="_blank">
+<a href="https://arxiv.org/abs/2504.07954" target="_blank">
     <img alt="arXiv" src="https://img.shields.io/badge/arXiv-Perception--R1-red?logo=arxiv" height="20" />
 </a>
 <a href="" target="_blank">
