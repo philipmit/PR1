@@ -33,7 +33,7 @@ logger = logging.getLogger(__name__)
 processor = None
 
 def collate_fn(examples):
-    processor = Qwen2VLProcessor.from_pretrained("/mnt/jfs-test/models/Qwen2-VL-2B-Instruct")
+    processor = Qwen2VLProcessor.from_pretrained("Qwen/Qwen2-VL-2B-Instruct")
     prompts = [json.loads(example['prompt']) for example in examples]
     texts = [
         processor.apply_chat_template(prompt, tokenize=False) for prompt in prompts
