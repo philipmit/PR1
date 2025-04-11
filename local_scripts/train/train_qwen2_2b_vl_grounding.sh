@@ -35,7 +35,7 @@ torchrun \
     ${PR1_PATH}/src/open_r1/grpo_vllm.py \
     --deepspeed ${PR1_PATH}/configs/zero3.json \
     --output_dir "${OUTPUT_DIR}" \
-    --model_name_or_path /mnt/jfs-test/models/Qwen2-VL-2B-Instruct \
+    --model_name_or_path Qwen/Qwen2-VL-2B-Instruct \
     --dataset_name Kangheng/refcoco_320k \
     --max_prompt_length 2048 \
     --max_completion_length 768 \
