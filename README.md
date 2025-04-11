@@ -84,7 +84,7 @@ The training script includes comprehensive configurations for hyperparameters, d
 # 📊Evaluation
 
 ## Preparation
-Download the evaluation datas from [🤗huggingface](https://huggingface.co/datasets/Kangheng/PR1-Qwen2-VL-2B-Grounding), and then unzip them in the `eval/` folder. The directory structure should be:
+Download the evaluation datas from [🤗huggingface](https://huggingface.co/datasets/Kangheng/PR1-Datasets-Grounding), and then unzip them in the `eval/` folder. The directory structure should be:
 
 > **Important**: The COCO images are not included in the package and must be downloaded separately. Please download the COCO images from the official [COCO](https://cocodataset.org/#download) website and place them in the `eval/images/coco/` directory.
 
