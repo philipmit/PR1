@@ -3,7 +3,7 @@ from transformers import Qwen2VLForConditionalGeneration, AutoTokenizer, AutoPro
 from qwen_vl_utils import process_vision_info
 
 os.environ["CUDA_VISIBLE_DEVICES"] = "0"
-model_id = "/mnt/jfs-test/models/Qwen2-VL-2B-Instruct"
+model_id = "Qwen/Qwen2-VL-2B-Instruct"
 model = Qwen2VLForConditionalGeneration.from_pretrained(
     model_id,
     torch_dtype="auto",
