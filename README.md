@@ -164,7 +164,7 @@ If you find our paper and code useful in your research, please consider giving u
 @article{yu2025perception,
   title={Perception R1: Pioneering Perception Policy with Reinforcement Learning},
   author={Yu, En and Lin, Kangheng and Zhao, Liang and Yin, Jisheng and Peng, Yuang and Wei, Haoran and Sun, Jianjian and Han, Chunrui and Ge, Zheng and Zhang, Xiangyu and Jiang, Daxin and Wang, Jingyu and Tao, Wenbing},
-  journal={arXiv preprint arXiv:2504.1029},
+  journal={arXiv preprint arXiv:2504.07954},
   year={2025}
 }
 ```
