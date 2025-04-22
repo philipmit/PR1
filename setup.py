@@ -107,7 +107,7 @@ install_requires = [
     deps["sentencepiece"],
     deps["transformers"],
     deps["trl"],
-    deps["flash-attn"],
+    # deps["flash-attn"],
     deps["scipy"],
     deps["pillow"],
     deps["jmespath"],
