@@ -111,7 +111,7 @@ def single_gpu_eval_model(args, data, language='en'):
     # Evaluation metrics
     messages = []
     for x in data:
-        img_path = os.path.join(args.image_dir, 'ocr', language+"_pdf_png", x['image'])
+        img_path = os.path.join(args.image_dir, language+"_pdf_png", x['image'])
         messages.append([{
             "role": "user",
             "content": [
@@ -161,6 +161,7 @@ def main(args):
         with open(os.path.join(output_path, f"{dataset}_results_{datetime.datetime.now().strftime('%m%d_%H%M%S')}.json"), "w") as f:
             json.dump(data, f, indent=4)
         # multi process post processing
+        print("begin post processing")
         mini_eval_batches = [get_chunk(data, args.num_processes, chunk_idx) for chunk_idx in range(args.num_processes)]
         scores = [compute_metrics.remote(mini_eval_batch) for mini_eval_batch in mini_eval_batches]
         scores = ray.get(scores)

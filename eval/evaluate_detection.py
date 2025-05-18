@@ -130,7 +130,7 @@ class COCOEvaluator:
 
     def _run_coco_eval(self, results):
         output_path = os.path.join('logs', os.path.basename(self.args.model_path), 'detection')
-        os.makedirs(os.path.dirname(output_path), exist_ok=True)
+        os.makedirs(output_path, exist_ok=True)
         temp_file = os.path.join(output_path, f"temp_results_{time.time()}.json")
         with open(temp_file, 'w') as f:
             json.dump(results, f)

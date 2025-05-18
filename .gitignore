@@ -3,3 +3,5 @@ local_scripts/train/debug.sh
 src/open_r1.egg-info/PKG-INFO
 assets/.DS_Store
 eval/logs
+eval/PR1-Evaluations/
+eval/PR1-Datasets-Grounding/
