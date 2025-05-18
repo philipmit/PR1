@@ -121,7 +121,7 @@ python eval/evaluate_grounding.py \
 ### Detection Evaluation
 ```bash
 pip install pycocotools
-python eval/evaluate_detecion.py \
+python eval/evaluate_detection.py \
     --model_path Kangheng/PR1-Qwen2-VL-2B-Detection \
     --anno_dir 'eval/jsons/detection/coco_val2017.json' \
     --image_dir 'eval/images/coco/val2017/'
