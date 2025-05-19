@@ -63,7 +63,7 @@ _deps = [
     "torch==2.5.1",
     "transformers",
     "trl",
-    "vllm==0.7.3",
+    "vllm @ https://github.com/vllm-project/vllm/releases/download/v0.7.3/vllm-0.7.3+cu118-cp310-cp310-manylinux1_x86_64.whl",
     "wandb>=0.19.1",
     "pillow",
     "jmespath>=0.7.1,<2.0.0",
