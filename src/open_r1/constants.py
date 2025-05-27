@@ -4,6 +4,8 @@ from open_r1.rewards import *
 reward_funcs_registry = {
     "pr1_grounding": pr1_grounding_reward,
     "pr1_grounding_format": pr1_grounding_format_reward,
+    "pr1_detection": pr1_detection_reward,
+    "pr1_counting": pr1_counting_reward,
 }
 
 # SYSTEM PROMPTS
