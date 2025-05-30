@@ -72,7 +72,8 @@ _deps = [
     "scipy",
     "qwen_vl_utils",
     "megfile", 
-    "triton==2.3.1" # adding this
+    # "triton==2.3.1" # adding this
+    "triton==3.1.0" # adding this
 ]
 
 # this is a lookup table with items like:
