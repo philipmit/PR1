@@ -52,7 +52,8 @@ _deps = [
     "hf_transfer>=0.1.4",
     "huggingface-hub[cli]>=0.19.2,<1.0",
     "isort>=5.12.0",
-    "liger_kernel==0.5.2",
+    # "liger_kernel==0.5.2",
+    "liger_kernel>=0.5.3", # adding this
     # "lighteval @ git+https://github.com/huggingface/lighteval.git@4f381b352c0e467b5870a97d41cb66b487a2c503#egg=lighteval[math]",
     "math-verify",  # Used for math verification in grpo
     "packaging>=23.0",
