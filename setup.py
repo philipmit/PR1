@@ -52,8 +52,8 @@ _deps = [
     "hf_transfer>=0.1.4",
     "huggingface-hub[cli]>=0.19.2,<1.0",
     "isort>=5.12.0",
-    # "liger_kernel==0.5.2",
-    "liger_kernel>=0.5.3", # adding this
+    "liger_kernel==0.5.2",
+    # "liger_kernel>=0.5.3", # adding this
     # "lighteval @ git+https://github.com/huggingface/lighteval.git@4f381b352c0e467b5870a97d41cb66b487a2c503#egg=lighteval[math]",
     "math-verify",  # Used for math verification in grpo
     "packaging>=23.0",
@@ -64,16 +64,16 @@ _deps = [
     "torch==2.5.1",
     "transformers",
     "trl",
-    # "vllm @ https://github.com/vllm-project/vllm/releases/download/v0.7.3/vllm-0.7.3+cu118-cp310-cp310-manylinux1_x86_64.whl",
-    "vllm==0.3.2", # adding this
+    "vllm @ https://github.com/vllm-project/vllm/releases/download/v0.7.3/vllm-0.7.3+cu118-cp310-cp310-manylinux1_x86_64.whl",
+    # "vllm==0.3.2", # adding this
     "wandb>=0.19.1",
     "pillow",
     "jmespath>=0.7.1,<2.0.0",
     "scipy",
     "qwen_vl_utils",
     "megfile", 
-    # "triton==2.3.1" # adding this
-    "triton==3.1.0" # adding this
+    "triton==2.3.1" # adding this
+    # "triton==3.1.0" # adding this
 ]
 
 # this is a lookup table with items like:
