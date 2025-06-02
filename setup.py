@@ -68,7 +68,7 @@ _deps = [
     # "vllm==0.3.2", # adding this
      # "vllm==0.2.4", # adding this
     # "vllm==0.7.3", # adding this
-    "vllm==0.1.7.post1",
+    # "vllm==0.1.7.post1",
     "wandb>=0.19.1",
     "pillow",
     "jmespath>=0.7.1,<2.0.0",
